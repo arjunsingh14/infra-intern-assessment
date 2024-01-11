@@ -1,34 +1,28 @@
 package main
 
 
-
-//Initial brute force solution
-
-
-
-
 // SolveSudoku is the main function that is called to solve the Sudoku puzzle.
-// It calls the helper function 'solve' and returns the solved board.
-func SolveSudoku(board [][]int) [][]int {
-    solve(board)
-    return board
+// It calls the helper function 'solve' and returns the solved game.
+func SolveSudoku(game [][]int) [][]int {
+    helper(game)
+    return game
 }
 
-// solve is a helper function that uses backtracking to solve the Sudoku puzzle.
+// helper function that uses backtracking to solve the Sudoku puzzle.
 // It iterates over each cell in the board. If it finds an empty cell (0), it tries to fill it with a number from 1 to 9.
 // If the number is valid (doesn't violate Sudoku rules), it recursively calls solve to fill in the rest of the board.
 // If it can't find a valid number, it backtracks by setting the cell back to 0 and returning false.
-func solve(board [][]int) bool {
+func helper(game [][]int) bool {
     for i := 0; i < 9; i++ {
         for j := 0; j < 9; j++ {
-            if board[i][j] == 0 {
+            if game[i][j] == 0 {
                 for num := 1; num <= 9; num++ {
-                    if isValid(board, i, j, num) {
-                        board[i][j] = num
-                        if solve(board) {
+                    if check_valid(game, i, j, num) {
+                        game[i][j] = num
+                        if helper(game) {
                             return true
                         }
-                        board[i][j] = 0
+                        game[i][j] = 0
                     }
                 }
                 return false
@@ -38,9 +32,10 @@ func solve(board [][]int) bool {
     return true
 }
 
-// isValid is a helper function that checks if a number is valid in a given cell by checking the row, column, and 3x3 box that the cell belongs to.
-// It returns false if the number already exists in the row, column, or 3x3 box, and true otherwise.
-func isValid(board [][]int, row, col, num int) bool {
+
+// The check_valid function checks if a number is valid in a given cell.
+// It returns true if the number is not already used in the same row, column, and 3x3 box.
+func check_valid(board [][]int, row, col, num int) bool {
     for i := 0; i < 9; i++ {
         if board[i][col] == num {
             return false
@@ -54,7 +49,3 @@ func isValid(board [][]int, row, col, num int) bool {
     }
     return true
 }
-
-
-
-
